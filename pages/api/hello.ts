@@ -1,13 +1,22 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextRequest } from 'next/server'
 
-type Data = {
-  name: string
+export const config = {
+  runtime: 'edge',
 }
 
-export default function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  res.status(200).json({ name: 'John Doe' })
+export default async function handler(request: NextRequest) {
+  console.log(`API request.referrer: '${request.referrer}'`)
+  console.log(`API request.headers.get('referer'): '${request.headers.get('referer')}'`)
+
+  return new Response(
+      JSON.stringify({
+        name: 'Jim Halpert',
+      }),
+      {
+        status: 200,
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+  )
 }
